@@ -102,4 +102,4 @@ Assuming the credentials.ini is submitted with the correct URL of your repo.
 
 ### Credits ###
 
-Ram Durairajan, Steven Walton, Joe Istas, Michal Yong
+Michal Young, Ram Durairajan, Steven Walton, Joe Istas.

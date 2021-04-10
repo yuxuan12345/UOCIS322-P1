@@ -1,4 +1,4 @@
-# README #
+# UOCIS322 - Project 1 #
 
 A "getting started" project for CIS 322, introduction to software engineering,
 at the University of Oregon.
@@ -69,7 +69,11 @@ Deployment should work "out of the box" with this command sequence:
   ```
 
   ```
-  make run or make start
+  make run
+  ```
+  or
+  ```
+  make start
   ```
 
   *test it with a browser now; send a request*

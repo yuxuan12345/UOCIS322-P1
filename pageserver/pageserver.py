@@ -59,6 +59,17 @@ def serve(sock, func):
         (clientsocket, address) = sock.accept()
         _thread.start_new_thread(func, (clientsocket,))
 
+
+##
+# Starter version only serves cat pictures. In fact, only a
+# particular cat picture.  This one.
+##
+CAT = """
+     ^ ^
+   =(   )=
+"""
+
+
 # HTTP response codes, as the strings we will actually send.
 # See:  https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 # or    http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
@@ -74,7 +85,6 @@ def respond(sock):
     This server responds only to GET requests (not PUT, POST, or UPDATE).
     Any valid GET request is answered with an ascii graphic of a cat.
     """
-    sent = 0
     request = sock.recv(1024)  # We accept only short requests
     request = str(request, encoding='utf-8', errors='strict')
     log.info("--- Received request ----")
@@ -83,8 +93,12 @@ def respond(sock):
     parts = request.split()
     if len(parts) > 1 and parts[0] == "GET":
         f = parts[1]
-        if (("//" in f) or ("~" in f) or (".." in f)):
+        if (f == "/"):
+            transmit(STATUS_OK, sock)
+            transmit(CAT, sock)
+        elif (("//" in f) or ("~" in f) or (".." in f)):
             transmit(STATUS_FORBIDDEN, sock)
+            transmit("<h1>403 Forbidden</h1>\n", sock)
         else:
             ext = os.path.splitext(f)[-1]
             if (ext == ".html" or ext == ".css"):
@@ -95,8 +109,10 @@ def respond(sock):
                     transmit(f.read(), sock)
                 else:
                     transmit(STATUS_NOT_FOUND, sock)
+                    transmit("<h1>404 Not Found</h1>\n", sock)
             else:
                 transmit(STATUS_NOT_FOUND, sock)
+                transmit("<h1>404 Not Found</h1>\n", sock)
     else:
         log.info("Unhandled request: {}".format(request))
         transmit(STATUS_NOT_IMPLEMENTED, sock)

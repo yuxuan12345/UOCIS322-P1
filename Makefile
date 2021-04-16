@@ -31,7 +31,8 @@ stop:	,pypid
 # 
 clean:
 	rm -f *.pyc
-	rm -rf __pycache__
+	rm -f ,pypid
+	rm -rf pageserver/__pycache__
 
 veryclean:
 	make clean
